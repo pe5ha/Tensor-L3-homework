@@ -23,23 +23,17 @@ public class Main {
         files.add(file);
         files.add(file2);
         files.add(file3);
-        Folder folder = new Folder("myFolder", null, files);
+        Folder folder = new Folder("myFolder", null, file,file2,file3);
         System.out.println("Расширение файла file: " + ((File) folder.getChildElements().get(0)).getExtension());
 
-        files = new ArrayList<>();
-        files.add(new File("img.png", null));
-        Folder folder2 = new Folder("downloads", null, files);
+        Folder folder2 = new Folder("downloads", null, new File("img.png", null));
         File file1 = new File("code.kt", folder2);
 
-        Folder emptyFolder = new Folder("trash", folder, null);
+        Folder emptyFolder = new Folder("trash", folder);
         File fileInFolder = new File("meme.jpg", emptyFolder);
         File fileInFolder2 = new File("meme2.jpg", emptyFolder);
 
-        files = new ArrayList<>();
-        files.add(folder);
-        files.add(folder2);
-        files.add(new File("code.java", null));
-        Folder rootFolder = new Folder("root", null, files);
+        Folder rootFolder = new Folder("root", null, folder,folder2,new File("code.java", null));
 
         System.out.println("Путь к файлу file: " + file.getPath());
         System.out.println("Дерево папок\n" + rootFolder);

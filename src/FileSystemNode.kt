@@ -21,13 +21,13 @@ open class AbstractFileSystemNode(override val name: String, private var parent:
     }
 }
 
-class Folder(name: String, parent: FileSystemNode?, _childElements: ArrayList<FileSystemNode>?) :
+class Folder(name: String, parent: FileSystemNode?, vararg _childElements: FileSystemNode) :
     AbstractFileSystemNode(name, parent) {
 
     val childElements: ArrayList<FileSystemNode> = ArrayList<FileSystemNode>()
 
     init {
-        if (_childElements != null) for (child in _childElements!!) {
+        for (child in _childElements) {
             child.setParent(this)
             childElements.add(child)
         }
