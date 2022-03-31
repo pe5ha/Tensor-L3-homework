@@ -23,7 +23,7 @@ public class Main {
         files.add(file);
         files.add(file2);
         files.add(file3);
-        Folder folder = new Folder("myFolder", null, file,file2,file3);
+        Folder folder = new Folder("myFolder", null, files.toArray(new FileSystemNode[0]));
         System.out.println("Расширение файла file: " + ((File) folder.getChildElements().get(0)).getExtension());
 
         Folder folder2 = new Folder("downloads", null, new File("img.png", null));

@@ -6,9 +6,9 @@ enum class SuitsKt {
 
 class CardKt(var suit: SuitsKt, var rank: RankKt) {
 
-    fun isBetterThen(card: CardKt): Boolean {
-        return suit == card.suit && rank.rankValue > card.rank.rankValue
-    }
+    fun isBetterThen(card: CardKt): Boolean =
+        suit == card.suit && rank.rankValue > card.rank.rankValue
+
 
     fun compare(card: CardKt): Int { // >0 if this card better, =0 if equal, <0 if this card weaker
         if (suit == card.suit) return rank.rankValue - card.rank.rankValue else {
@@ -19,10 +19,16 @@ class CardKt(var suit: SuitsKt, var rank: RankKt) {
         }
         return -1000
     }
+    fun compare2(card: CardKt): Int =
+        when{
+            suit == card.suit -> rank.rankValue - card.rank.rankValue
+            suit.ordinal < card.suit.ordinal -> 1
+            else -> -1
+        }
 
-    override fun toString(): String {
-        return "$suit-$rank"
-    }
+    override fun toString(): String =
+        "$suit-$rank"
+
 
     override fun equals(o: Any?): Boolean {
         if (this === o) return true

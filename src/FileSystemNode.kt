@@ -1,37 +1,37 @@
 import java.util.ArrayList
 
 interface FileSystemNode {
-    fun getParent(): FileSystemNode?
     val name: String
     val path: String
-    fun setParent(parent: FileSystemNode?)
+    var parent: FileSystemNode?
 }
 
-open class AbstractFileSystemNode(override val name: String, private var parent: FileSystemNode?) :
+open class AbstractFileSystemNode(
+    override val name: String,
+    override var parent: FileSystemNode?
+) :
     FileSystemNode {
-    override fun getParent(): FileSystemNode? {
-        return parent
-    }
 
     override val path: String
-        get() = if (parent == null) name else parent!!.path + "/" + name
+        get() = parent?.let { "${it.path}/$name" } ?: name
 
-    override fun setParent(parent: FileSystemNode?) {
-        this.parent = parent
-    }
 }
 
-class Folder(name: String, parent: FileSystemNode?, vararg _childElements: FileSystemNode) :
+class Folder(
+    name: String,
+    parent: FileSystemNode?,
+    vararg _childElements: FileSystemNode
+) :
     AbstractFileSystemNode(name, parent) {
 
-    val childElements: ArrayList<FileSystemNode> = ArrayList<FileSystemNode>()
+    val childElements: ArrayList<FileSystemNode> =
+        _childElements.mapTo(ArrayList()){
+            it.parent = this
+            it
+        }
 
     init {
-        for (child in _childElements) {
-            child.setParent(this)
-            childElements.add(child)
-        }
-        if (parent != null && parent is Folder) parent.addChild(this)
+        if (parent is Folder) parent.addChild(this)
     }
 
     fun addChild(child: FileSystemNode) {
@@ -64,7 +64,10 @@ class Folder(name: String, parent: FileSystemNode?, vararg _childElements: FileS
 
 }
 
-class File(name: String, parent: FileSystemNode?) : AbstractFileSystemNode(name, parent) {
+class File(
+    name: String,
+    parent: FileSystemNode?
+) : AbstractFileSystemNode(name, parent) {
     init {
         if (parent is Folder) parent.addChild(this)
     }
